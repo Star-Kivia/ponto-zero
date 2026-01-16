@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Seed Ponto Zero</title>
+    <style>
+        body {
+            font-family: system-ui, Arial;
+            margin: 24px;
+            max-width: 860px
+        }
+
+        button {
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            font-weight: 700
+        }
+
+        pre {
+            background: #111;
+            color: #0f0;
+            padding: 12px;
+            border-radius: 12px;
+            overflow: auto
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Seed Firestore (Ponto Zero)</h1>
+    <p>Abra com Live Server. Clique uma vez. Depois volte as regras para read-only.</p>
+
+    <button id="go">Criar coleções e encher dados</button>
+    <pre id="log">Pronta para semear 🌱</pre>
+
+    <script type="module">
+        import { db } from "./js/firebase.js";
+        import {
+            doc, setDoc
+        } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+        const log = (msg) => {
+            const el = document.getElementById("log");
+            el.textContent += "\\n" + msg;
+        };
+
+        const slug = (s) =>
+            (s || "")
+                .toLowerCase()
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // tira acento
+                .replace(/\s+/g, " ")
+                .trim();
+
+        // ============================
+        // DADOS (você + extras)
+        // ============================
+
+        const cursos = [
+            {
+                id: "fundat",
+                nome: "FUNDAT (Aracaju) – Cursos rápidos",
+                area: "Qualificação",
+                tipo: "gratuito",
+                certificado: true,
+                link: "https://www.instagram.com/fundat_aracaju/",
+                descricao: "Cursos presenciais, inscrições normalmente presenciais; comunicam datas pelo Instagram. Duração curta."
+            },
+            {
+                id: "senac_gratuitos",
+                nome: "SENAC – Cursos gratuitos online",
+                area: "Tecnologia e serviços",
+                tipo: "gratuito",
+                certificado: true,
+                link: "https://www.senac.br/",
+                descricao: "Cursos gratuitos e oportunidades como jovem aprendiz (varia por região)."
+            },
+            {
+                id: "senai_gratuitos",
+                nome: "SENAI – Cursos e jovem aprendiz",
+                area: "Tecnologia/Indústria",
+                tipo: "gratuito",
+                certificado: true,
+                link: "https://www.senai.br/",
+                descricao: "Muitas opções em tecnologia e cursos livres; pode ter programas de aprendizagem."
+            },
+            {
+                id: "unova",
+                nome: "UNOVA – Cursos (certificado opcional)",
+                area: "Administração, informática, marketing, idiomas",
+                tipo: "gratuito",
+                certificado: true,
+                link: "https://www.pensarcursos.com.br/",
+                descricao: "Cursos grátis com certificado opcional (pode ser pago em algumas trilhas)."
+            },
+            {
+                id: "pensa_cursos",
+                nome: "PENSA CURSOS – Cursos online com certificado",
+                area: "Multidisciplinar",
+                tipo: "gratuito",
+                certificado: true,
+                link: "https://www.pensarcursos.com.br/",
+                descricao: "Cursos online; geralmente conclui rápido; certificado ao final (ver regras da plataforma)."
+            },
+            {
+                id: "ifs",
+                nome: "IFS – Instituto Federal de Sergipe",
+                area: "Técnico e Superior",
+                tipo: "gratuito",
+                certificado: true,
+                link: "https://www.ifs.edu.br/",
+                descricao: "Cursos técnicos/superiores e ofertas EAD/presenciais (dependendo dos editais)."
+            },
+            {
+                id: "cebrac",
+                nome: "CEBRAC – Cursos profissionalizantes (Aracaju)",
+                area: "Profissionalizante",
+                tipo: "pago",
+                certificado: true,
+                link: "https://cebrac.com.br/",
+                descricao: "Qualificação para mercado de trabalho, unidades presenciais."
+            },
+            {
+                id: "senai_cetcc",
+                nome: "SENAI-SE (CETCC) – Cursos livres e técnicos",
+                area: "Tecnologia e gestão",
+                tipo: "gratuito",
+                certificado: true,
+                link: "https://www.senai-se.org.br/",
+                descricao: "Cursos online/presenciais (quando disponíveis), foco em empregabilidade."
+            },
+            // =====================
+            // CURSOS — TECNOLOGIA
+            // =====================
+            {
+                id: "logica_programacao",
+                nome: "Lógica de Programação – Iniciante",
+                area: "Tecnologia",
+                tipo: "gratuito",
+                certificado: true,
+                link: "https://www.pensarcursos.com.br/",
+                descricao: "Base para quem quer entrar em programação, mesmo sem experiência."
+            },
+            {
+                id: "html_css",
+                nome: "HTML e CSS – Criação de Sites",
+                area: "Tecnologia",
+                tipo: "gratuito",
+                certificado: true,
+                link: "https://www.pensarcursos.com.br/",
+                descricao: "Introdução ao desenvolvimento web e design básico."
+            },
+            {
+                id: "javascript_basico",
+                nome: "JavaScript – Básico",
+                area: "Tecnologia",
+                tipo: "gratuito",
+                certificado: true,
+                link: "https://www.pensarcursos.com.br/",
+                descricao: "Primeiros passos com JavaScript e lógica aplicada."
+            },
+            {
+                id: "informatica_avancada",
+                nome: "Informática Avançada",
+                area: "Tecnologia",
+                tipo: "gratuito",
+                certificado: true,
+                link: "https://www.pensarcursos.com.br/",
+                descricao: "Pacote Office, internet, produtividade e rotinas administrativas."
+            },
+
+            // =====================
+            // CURSOS — ADMIN / GESTÃO
+            // =====================
+            {
+                id: "administracao_basica",
+                nome: "Administração Básica",
+                area: "Administração",
+                tipo: "gratuito",
+                certificado: true,
+                link: "https://www.pensarcursos.com.br/",
+                descricao: "Introdução à gestão, empresas e rotinas administrativas."
+            },
+            {
+                id: "rh_basico",
+                nome: "Recursos Humanos – Básico",
+                area: "Administração",
+                tipo: "gratuito",
+                certificado: true,
+                link: "https://www.pensarcursos.com.br/",
+                descricao: "Noções de RH, recrutamento e organização interna."
+            },
+            {
+                id: "financeiro_pessoal",
+                nome: "Educação Financeira Pessoal",
+                area: "Finanças",
+                tipo: "gratuito",
+                certificado: true,
+                link: "https://www.pensarcursos.com.br/",
+                descricao: "Controle financeiro pessoal e planejamento."
+            },
+
+            // =====================
+            // CURSOS — MARKETING / DESIGN
+            // =====================
+            {
+                id: "marketing_digital",
+                nome: "Marketing Digital – Iniciante",
+                area: "Marketing",
+                tipo: "gratuito",
+                certificado: true,
+                link: "https://www.pensarcursos.com.br/",
+                descricao: "Noções de redes sociais, anúncios e presença online."
+            },
+            {
+                id: "design_grafico",
+                nome: "Design Gráfico – Fundamentos",
+                area: "Design",
+                tipo: "gratuito",
+                certificado: true,
+                link: "https://www.pensarcursos.com.br/",
+                descricao: "Introdução ao design visual e comunicação gráfica."
+            },
+            {
+                id: "canva_pratico",
+                nome: "Canva – Criação de Artes",
+                area: "Design",
+                tipo: "gratuito",
+                certificado: false,
+                link: "https://www.canva.com/",
+                descricao: "Criação rápida de artes para redes sociais e trabalhos."
+            },
+
+            // =====================
+            // CURSOS — IDIOMAS
+            // =====================
+            {
+                id: "ingles_basico_cert",
+                nome: "Inglês Básico com Certificado",
+                area: "Idiomas",
+                tipo: "gratuito",
+                certificado: true,
+                link: "https://www.pensarcursos.com.br/",
+                descricao: "Vocabulário essencial para trabalho e estudo."
+            },
+            {
+                id: "espanhol_basico",
+                nome: "Espanhol Básico",
+                area: "Idiomas",
+                tipo: "gratuito",
+                certificado: true,
+                link: "https://www.pensarcursos.com.br/",
+                descricao: "Introdução ao espanhol para comunicação básica."
+            },
+
+            // =====================
+            // CURSOS — CARREIRA
+            // =====================
+            {
+                id: "curriculo_profissional",
+                nome: "Currículo Profissional do Zero",
+                area: "Carreira",
+                tipo: "gratuito",
+                certificado: false,
+                link: "https://www.canva.com/",
+                descricao: "Como montar currículo simples, objetivo e sem erros."
+            },
+            {
+                id: "entrevista_emprego",
+                nome: "Como se Sair Bem em Entrevistas",
+                area: "Carreira",
+                tipo: "gratuito",
+                certificado: false,
+                link: "https://www.youtube.com/",
+                descricao: "Comportamento, respostas e postura em entrevistas."
+            },
+            // extras preenchendo catálogo (genéricos, mas úteis)
+            { id: "cv_basico", nome: "Currículo – Básico e Objetivo", area: "Carreira", tipo: "gratuito", certificado: false, link: "https://www.canva.com/", descricao: "Templates e organização de currículo (use modelos, não invente)." },
+            { id: "entrevista", nome: "Entrevista – Como se preparar", area: "Carreira", tipo: "gratuito", certificado: false, link: "https://www.youtube.com/", descricao: "Roteiro de preparo + simulação (treino prático)." },
+            { id: "excel_iniciante", nome: "Excel – Iniciante", area: "Administração", tipo: "gratuito", certificado: true, link: "https://www.pensarcursos.com.br/", descricao: "Habilidade útil para vagas de nível médio e estágio." },
+            { id: "atendimento", nome: "Atendimento ao Cliente", area: "Serviços", tipo: "gratuito", certificado: true, link: "https://www.pensarcursos.com.br/", descricao: "Boa porta de entrada para primeiro emprego." },
+            { id: "informatica", nome: "Informática Essencial", area: "Tecnologia", tipo: "gratuito", certificado: true, link: "https://www.pensarcursos.com.br/", descricao: "Base: arquivos, e-mail, documentos, internet." },
+            { id: "marketing_basico", nome: "Marketing – Noções básicas", area: "Marketing", tipo: "gratuito", certificado: true, link: "https://www.pensarcursos.com.br/", descricao: "Noções para comércio/atendimento/digital." },
+            { id: "ingles_basico", nome: "Inglês – Básico (rotina)", area: "Idiomas", tipo: "gratuito", certificado: false, link: "https://www.duolingo.com/", descricao: "Rotina diária pra destravar repertório." }
+        ];
+
+        const empregos = [
+            {
+                id: "infojobs",
+                nome: "InfoJobs – Vagas, jovem aprendiz e estágio",
+                descricao: "Plataforma para encontrar vagas (aprendiz, estágio, CLT, temporário).",
+                publicoAlvo: "Jovens e geral",
+                regiao: "Sergipe",
+                link: "https://login.infojobs.com.br/vagas/emprego"
+            },
+            {
+                id: "go_sergipe",
+                nome: "GO Sergipe – Vagas e qualificação",
+                descricao: "Plataforma do Governo de Sergipe para vagas e cursos de qualificação na região.",
+                publicoAlvo: "Sergipe (Aracaju e região)",
+                regiao: "Sergipe",
+                link: "https://gosergipe.se.gov.br/"
+            },
+            {
+                id: "ppe",
+                nome: "Programa Primeiro Emprego (PPE)",
+                descricao: "Focado em jovens (18–29) com qualificação + experiência prática.",
+                publicoAlvo: "Jovens 18–29",
+                regiao: "Sergipe",
+                link: "https://gosergipe.se.gov.br/"
+            },
+            {
+                id: "fundat_vagas",
+                nome: "FUNDAT – Vagas de emprego (Aracaju)",
+                descricao: "Divulga oportunidades de emprego e ações de qualificação em Aracaju.",
+                publicoAlvo: "Geral",
+                regiao: "Sergipe",
+                link: "https://www.instagram.com/fundat_aracaju/"
+            },
+            {
+                id: "vagas_aracaju",
+                nome: "Vagas Aracaju – Empregos locais",
+                descricao: "Divulgação de vagas locais em Aracaju e região.",
+                publicoAlvo: "Geral",
+                regiao: "Sergipe",
+                link: "https://www.google.com/search?q=vagas+aracaju"
+            },
+            {
+                id: "sine_sergipe",
+                nome: "SINE Sergipe",
+                descricao: "Intermediação de mão de obra e serviços ao trabalhador.",
+                publicoAlvo: "Geral",
+                regiao: "Sergipe",
+                link: "https://www.gov.br/trabalho-e-emprego/pt-br"
+            },
+            {
+                id: "jovem_aprendiz_portais",
+                nome: "Vagas Jovem Aprendiz",
+                descricao: "Portais com vagas específicas para jovem aprendiz.",
+                publicoAlvo: "Jovens",
+                regiao: "Sergipe",
+                link: "https://www.jovemaprendiz.gov.br/"
+            },
+
+            // ===============================
+            // PRIMEIRO EMPREGO / JOVEM APRENDIZ
+            // ===============================
+            {
+                id: "jovem_aprendiz_brasil",
+                nome: "Jovem Aprendiz Brasil",
+                descricao: "Portal focado exclusivamente em vagas de jovem aprendiz em todo o país.",
+                publicoAlvo: "Jovens (14–24)",
+                regiao: "Brasil",
+                link: "https://www.jovemaprendizbrasil.com/"
+            },
+            {
+                id: "aprendiz_legal",
+                nome: "Aprendiz Legal",
+                descricao: "Programa nacional de aprendizagem com empresas parceiras.",
+                publicoAlvo: "Jovens",
+                regiao: "Brasil",
+                link: "https://aprendizlegal.org.br/"
+            },
+            {
+                id: "ciee_aprendiz",
+                nome: "CIEE – Jovem Aprendiz",
+                descricao: "Aprendizagem e estágio para estudantes e jovens.",
+                publicoAlvo: "Jovens/Estudantes",
+                regiao: "Brasil",
+                link: "https://portal.ciee.org.br/"
+            },
+
+            // ===============================
+            // PORTAIS NACIONAIS DE EMPREGO
+            // ===============================
+            {
+                id: "indeed",
+                nome: "Indeed",
+                descricao: "Um dos maiores buscadores de vagas do mundo.",
+                publicoAlvo: "Geral",
+                regiao: "Brasil",
+                link: "https://br.indeed.com/"
+            },
+            {
+                id: "vagas_com",
+                nome: "Vagas.com",
+                descricao: "Plataforma de vagas formais e processos seletivos estruturados.",
+                publicoAlvo: "Geral",
+                regiao: "Brasil",
+                link: "https://www.vagas.com.br/"
+            },
+            {
+                id: "catho",
+                nome: "Catho",
+                descricao: "Portal tradicional de empregos no Brasil.",
+                publicoAlvo: "Geral",
+                regiao: "Brasil",
+                link: "https://www.catho.com.br/"
+            },
+            {
+                id: "trabalha_brasil",
+                nome: "Trabalha Brasil",
+                descricao: "Vagas em diversas áreas, incluindo sem experiência.",
+                publicoAlvo: "Geral",
+                regiao: "Brasil",
+                link: "https://www.trabalhabrasil.com.br/"
+            },
+
+            // ===============================
+            // EMPREGOS LOCAIS — SERGIPE
+            // ===============================
+            {
+                id: "sine_sergipe",
+                nome: "SINE Sergipe",
+                descricao: "Sistema Nacional de Emprego com vagas locais.",
+                publicoAlvo: "Geral",
+                regiao: "Sergipe",
+                link: "https://www.gov.br/trabalho-e-emprego/pt-br"
+            },
+            {
+                id: "fundat_empregos",
+                nome: "FUNDAT – Vagas de Emprego",
+                descricao: "Vagas divulgadas pela FUNDAT em Aracaju.",
+                publicoAlvo: "Geral",
+                regiao: "Sergipe",
+                link: "https://www.instagram.com/fundat_aracaju/"
+            },
+            {
+                id: "prefeitura_aracaju_vagas",
+                nome: "Prefeitura de Aracaju – Oportunidades",
+                descricao: "Processos seletivos e oportunidades públicas.",
+                publicoAlvo: "Geral",
+                regiao: "Sergipe",
+                link: "https://aracaju.se.gov.br/"
+            },
+
+            // ===============================
+            // ESTÁGIO E TRAINEE
+            // ===============================
+            {
+                id: "nube",
+                nome: "NUBE – Estágios",
+                descricao: "Plataforma focada em estágio para estudantes.",
+                publicoAlvo: "Estudantes",
+                regiao: "Brasil",
+                link: "https://www.nube.com.br/"
+            },
+            {
+                id: "estagios_com",
+                nome: "Estágios.com",
+                descricao: "Vagas de estágio em várias áreas.",
+                publicoAlvo: "Estudantes",
+                regiao: "Brasil",
+                link: "https://www.estagios.com.br/"
+            },
+            {
+                id: "ciee_estagio",
+                nome: "CIEE – Estágios",
+                descricao: "Estágios remunerados e não remunerados.",
+                publicoAlvo: "Estudantes",
+                regiao: "Brasil",
+                link: "https://portal.ciee.org.br/"
+            },
+
+            // ===============================
+            // EMPREGO REMOTO / DIGITAL
+            // ===============================
+            {
+                id: "trampos_co",
+                nome: "Trampos.co",
+                descricao: "Vagas em marketing, design, comunicação e tecnologia.",
+                publicoAlvo: "Digital/Criação",
+                regiao: "Brasil",
+                link: "https://trampos.co/"
+            },
+            {
+                id: "remotar",
+                nome: "Remotar",
+                descricao: "Vagas remotas no Brasil e exterior.",
+                publicoAlvo: "Digital",
+                regiao: "Brasil",
+                link: "https://remotar.com.br/"
+            },
+            {
+                id: "linkedin_jobs",
+                nome: "LinkedIn – Vagas",
+                descricao: "Empregos, networking e oportunidades profissionais.",
+                publicoAlvo: "Geral",
+                regiao: "Brasil",
+                link: "https://www.linkedin.com/jobs/"
+            },
+
+            // ===============================
+            // EMPREGOS RÁPIDOS / SEM EXPERIÊNCIA
+            // ===============================
+            {
+                id: "getninjas",
+                nome: "GetNinjas",
+                descricao: "Trabalhos rápidos e prestação de serviços.",
+                publicoAlvo: "Autônomos/Iniciantes",
+                regiao: "Brasil",
+                link: "https://www.getninjas.com.br/"
+            },
+            {
+                id: "99freelas",
+                nome: "99Freelas",
+                descricao: "Freelance para iniciantes e profissionais.",
+                publicoAlvo: "Freelancers",
+                regiao: "Brasil",
+                link: "https://www.99freelas.com.br/"
+            },
+            {
+                id: "workana",
+                nome: "Workana",
+                descricao: "Plataforma de freelas na América Latina.",
+                publicoAlvo: "Freelancers",
+                regiao: "Brasil",
+                link: "https://www.workana.com/"
+            },
+
+
+
+            // extras preenchendo
+            { id: "linkedin", nome: "LinkedIn – Vagas e networking", descricao: "Vagas + portfólio e networking (mesmo básico já ajuda).", publicoAlvo: "Geral", regiao: "Sergipe", link: "https://www.linkedin.com/" },
+            { id: "gupy", nome: "Gupy – Plataformas de processo seletivo", descricao: "Muitas empresas usam; você cria perfil e acompanha etapas.", publicoAlvo: "Geral", regiao: "Sergipe", link: "https://www.gupy.io/" },
+            { id: "ciee", nome: "CIEE – Estágios e aprendizagem", descricao: "Estágio e aprendizagem (depende da sua região e ofertas).", publicoAlvo: "Jovens/estudantes", regiao: "Sergipe", link: "https://portal.ciee.org.br/" }
+        ];
+
+        const concursos = [
+            {
+                id: "estrategia",
+                nome: "Estratégia Concursos – Abertos",
+                nivel: "Portal",
+                regiao: "Sergipe",
+                link: "https://www.estrategiaconcursos.com.br/abertos"
+            },
+            {
+                id: "sead_concursos",
+                nome: "SEAD – Concursos (Sergipe)",
+                nivel: "Portal",
+                regiao: "Sergipe",
+                link: "https://sead.se.gov.br/concursos/"
+            },
+            {
+                id: "sead_andamento",
+                nome: "SEAD – Concursos em andamento",
+                nivel: "Portal",
+                regiao: "Sergipe",
+                link: "https://sead.se.gov.br/concursos/concursos-em-andamento/"
+            },
+            {
+                id: "aracaju_editais",
+                nome: "Prefeitura de Aracaju – Editais de Concurso e PSS",
+                nivel: "Portal",
+                regiao: "Sergipe",
+                link: "https://transparencia.aracaju.se.gov.br/prefeitura/editais-de-concurso-e-pss/"
+            },
+            {
+                id: "concursos_no_brasil_aracaju",
+                nome: "Concursos no Brasil – Aracaju/SE",
+                nivel: "Portal",
+                regiao: "Sergipe",
+                link: "https://concursosnobrasil.com/concursos/se/aracaju/"
+            },
+            {
+                id: "ache_concursos_se",
+                nome: "AcheConcursos – Concursos em Sergipe",
+                nivel: "Portal",
+                regiao: "Sergipe",
+                link: "https://www.acheconcursos.com.br/concursos-sergipe"
+            },
+            {
+                id: "concursos_educacao_se",
+                nome: "Concursos Educação – Sergipe",
+                nivel: "Médio/Superior",
+                regiao: "Sergipe",
+                link: "https://sead.se.gov.br/"
+            },
+            {
+                id: "pss_aracaju",
+                nome: "Processos Seletivos Simplificados – Aracaju",
+                nivel: "Diversos",
+                regiao: "Sergipe",
+                link: "https://transparencia.aracaju.se.gov.br/"
+            },
+            {
+                id: "concursos_saude_se",
+                nome: "Concursos na Área da Saúde – Sergipe",
+                nivel: "Técnico/Superior",
+                regiao: "Sergipe",
+                link: "https://www.acheconcursos.com.br/"
+            }
+
+        ];
+
+        // ============================
+        // SEED
+        // ============================
+        async function seedCollection(collectionName, items, mapper) {
+            let ok = 0;
+            for (const item of items) {
+                const data = mapper(item);
+                await setDoc(doc(db, collectionName, item.id), data, { merge: true });
+                ok++;
+            }
+            return ok;
+        }
+
+        document.getElementById("go").addEventListener("click", async () => {
+            try {
+                log("Iniciando seed…");
+
+                const c1 = await seedCollection("cursos", cursos, (it) => ({
+                    nome: it.nome,
+                    nomeLower: slug(it.nome),
+                    area: it.area,
+                    areaLower: slug(it.area),
+                    tipo: it.tipo,
+                    tipoLower: slug(it.tipo),
+                    certificado: !!it.certificado,
+                    link: it.link,
+                    descricao: it.descricao || ""
+                }));
+
+                const e1 = await seedCollection("empregos", empregos, (it) => ({
+                    nome: it.nome,
+                    nomeLower: slug(it.nome),
+                    descricao: it.descricao || "",
+                    publicoAlvo: it.publicoAlvo || "",
+                    regiao: it.regiao || "Sergipe",
+                    link: it.link
+                }));
+
+                const k1 = await seedCollection("concursos", concursos, (it) => ({
+                    nome: it.nome,
+                    nomeLower: slug(it.nome),
+                    nivel: it.nivel || "Médio",
+                    regiao: it.regiao || "Sergipe",
+                    link: it.link
+                }));
+
+                log("✅ Seed finalizado!");
+                log("cursos: " + c1);
+                log("empregos: " + e1);
+                log("concursos: " + k1);
+                log("Agora volte as regras para read-only (protótipo).");
+
+            } catch (err) {
+                console.error(err);
+                log("❌ ERRO: " + (err.code || err.message || err));
+            }
+        });
+    </script>
+</body>
+
+</html>

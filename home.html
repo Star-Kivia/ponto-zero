@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ponto Zero | Início</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <header class="nav">
+    <div class="container navbar">
+      <a class="brand" href="home.html"><span class="name">Ponto Zero</span><span class="tag">orientação</span></a>
+
+      <nav class="navlinks">
+        <a href="emprego.html">Emprego</a>
+        <a href="cursos.html">Cursos</a>
+        <a href="concursos.html">Concursos</a>
+      </nav>
+
+      <div class="navright">
+        <div class="searchwrap" role="search">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M10.8 18.2a7.4 7.4 0 1 1 0-14.8 7.4 7.4 0 0 1 0 14.8Z" stroke="rgba(26,19,36,.70)"
+              stroke-width="2" />
+            <path d="M16.9 16.9 21 21" stroke="rgba(26,19,36,.70)" stroke-width="2" stroke-linecap="round" />
+          </svg>
+          <input id="pzSearch" class="search" type="search" placeholder="Pesquisar…" aria-label="Pesquisar" />
+          <div id="pzSearchResults" aria-label="Resultados"></div>
+        </div>
+
+        <a class="btn primary" href="quiz.html">Fazer o quiz</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <!-- PALCO VISUAL -->
+      <section class="pz-visualStage">
+        <!-- fundo animado -->
+        <div class="pz-vfx" aria-hidden="true">
+          <div class="pz-vfxOrb a"></div>
+          <div class="pz-vfxOrb b"></div>
+          <div class="pz-vfxOrb c"></div>
+          <div class="pz-vfxGrid"></div>
+        </div>
+
+        <!-- topo: tagline + CTA -->
+        <div class="pz-stageTop">
+          <div class="pz-stamp">
+            <span class="pz-stampDot"></span>
+            <span class="pz-stampText">ponto de partida</span>
+          </div>
+
+          <div class="pz-stageActions">
+            <a class="pz-cta" href="quiz.html">Começar pelo Quiz</a>
+            <a class="pz-cta ghost" href="#mapa">Ir direto ao Mapa</a>
+          </div>
+        </div>
+
+        <!-- centro: headline + foto -->
+        <div class="pz-stageHero">
+          <div class="pz-stageCopy">
+            <h1 class="pz-headlineDrawn">Você não precisa se cobrar tanto.</h1>
+            <p class="pz-sublineTiny">Escolhe um começo. O resto vira caminho.</p>
+
+            <div class="pz-badgesRow" aria-label="Resumo">
+              <span class="pz-badgePill">3 min</span>
+              <span class="pz-badgePill">sem julgamento</span>
+              <span class="pz-badgePill">um passo real</span>
+            </div>
+          </div>
+
+          <div class="pz-illustration">
+            <img class="pz-illustration-photo"
+              src="https://i.postimg.cc/gjmt7m1M/Fundo-De-Emoticon-Confuso-PNG-Fundo-Branco-Perplexo-PNG-Imagem-para-download-gratuito.jpg"
+              alt="Pessoa jovem em um momento de reflexão" loading="lazy" />
+          </div>
+        </div>
+
+        <!-- PROPÓSITO (curto e humano) -->
+        <section class="pz-purpose" aria-label="Propósito do Ponto Zero">
+          <div class="pz-purposeHead">
+            <h2>Um ponto de partida, não uma cobrança</h2>
+            <p>
+              Para quem terminou a escola, está começando a vida adulta ou travou na pergunta:
+              <em>“e agora?”</em>
+            </p>
+          </div>
+
+          <div class="pz-purposeGrid">
+            <article class="pz-purposeCard">
+              <div class="pz-purposeK">A ideia</div>
+              <div class="pz-purposeT">Virar confusão em direção.</div>
+              <div class="pz-purposeS">
+                Você não precisa escolher “o resto da vida”. Só precisa de um começo seguro.
+              </div>
+            </article>
+
+            <article class="pz-purposeCard">
+              <div class="pz-purposeK">O que tem aqui</div>
+              <div class="pz-purposeT">Caminhos acessíveis.</div>
+              <div class="pz-purposeS">
+                Emprego, cursos e concursos com fontes confiáveis e passos que cabem no seu agora.
+              </div>
+            </article>
+
+            <article class="pz-purposeCard">
+              <div class="pz-purposeK">O tom</div>
+              <div class="pz-purposeT">Sem julgamento.</div>
+              <div class="pz-purposeS">
+                Sem cobrança, sem papo de coach, sem “só se esforçar”. Só orientação humana e prática.
+              </div>
+            </article>
+          </div>
+
+          <div class="pz-purposeFooter">
+            <div class="pz-purposeSoft">
+              Não é sobre decidir tudo. É só escolher por onde começar.
+            </div>
+          </div>
+        </section>
+
+
+        <!-- MAPA MENTAL -->
+        <section class="pz-mindmap" id="mapa" aria-label="Mapa mental">
+          <div class="pz-mapCore">
+            <div class="pz-coreGlow" aria-hidden="true"></div>
+            <div class="pz-coreTitle">Ponto Zero</div>
+            <div class="pz-coreSub">Escolha um caminho</div>
+          </div>
+
+          <!-- linhas SVG conectando -->
+          <svg class="pz-mapLines" viewBox="0 0 900 420" preserveAspectRatio="none" aria-hidden="true">
+            <path class="pz-line" d="M450 210 C360 170 280 140 190 120" />
+            <path class="pz-line" d="M450 210 C540 170 620 140 710 120" />
+            <path class="pz-line" d="M450 210 C450 260 450 310 450 360" />
+          </svg>
+
+          <!-- nós -->
+          <a class="pz-node left" href="emprego.html" aria-label="Emprego">
+            <div class="pz-nodeIcon a" aria-hidden="true"></div>
+            <div class="pz-nodeText">
+              <strong>Emprego</strong>
+              <span>sites confiáveis • programas • início seguro</span>
+            </div>
+          </a>
+
+          <a class="pz-node right" href="cursos.html" aria-label="Cursos">
+            <div class="pz-nodeIcon b" aria-hidden="true"></div>
+            <div class="pz-nodeText">
+              <strong>Cursos</strong>
+              <span>concluir rápido • certificado • prova prática</span>
+            </div>
+          </a>
+
+          <a class="pz-node bottom" href="concursos.html" aria-label="Concursos">
+            <div class="pz-nodeIcon c" aria-hidden="true"></div>
+            <div class="pz-nodeText">
+              <strong>Concursos</strong>
+              <span>níveis • fontes seguras • passos iniciais</span>
+            </div>
+          </a>
+        </section>
+      </section>
+
+      <footer>Ponto Zero • protótipo</footer>
+    </div>
+  </main>
+
+  <script type="module">
+    import { boot } from "./js/main.js";
+    boot();
+  </script>
+</body>
+
+</html>

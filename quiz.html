@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Ponto Zero | Quiz</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="container navbar">
+      <a class="brand" href="home.html"><span class="name">Ponto Zero</span><span class="tag">orientação</span></a>
+
+      <nav class="navlinks">
+        <a href="emprego.html">Emprego</a>
+        <a href="cursos.html">Cursos</a>
+        <a href="concursos.html">Concursos</a>
+      </nav>
+
+      <div class="navright">
+        <div class="searchwrap" role="search">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M10.8 18.2a7.4 7.4 0 1 1 0-14.8 7.4 7.4 0 0 1 0 14.8Z" stroke="rgba(26,19,36,.70)" stroke-width="2"/>
+            <path d="M16.9 16.9 21 21" stroke="rgba(26,19,36,.70)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input id="pzSearch" class="search" type="search" placeholder="Pesquisar…" aria-label="Pesquisar" />
+          <div id="pzSearchResults" aria-label="Resultados"></div>
+        </div>
+
+        <a class="btn" href="index.html">Início</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="pz-heroSimple">
+        <div class="pz-kicker"><span class="pz-kdot"></span>quiz</div>
+        <h1 class="pz-heroTitle2">Vamos achar um começo possível</h1>
+        <p class="pz-heroSub2">Responda no seu ritmo. No final, eu te mostro um caminho e os primeiros passos.</p>
+        <div class="pz-heroLinks">
+          <a class="pz-textLink" href="#" id="resetQuiz">recomeçar</a>
+          <a class="pz-textLink ghost" href="index.html">voltar</a>
+        </div>
+      </section>
+
+      <section class="pz-quizWrap">
+        <div class="pz-quizLeft">
+          <div class="pz-quizTopbar">
+            <div class="pz-progress">
+              <div class="pz-progressBar" id="bar"></div>
+            </div>
+            <div class="pz-progressMeta" id="meta">Pergunta 1</div>
+          </div>
+
+          <div class="pz-chat" id="chat" aria-live="polite"></div>
+
+          <div class="pz-choices" id="choices"></div>
+
+          <div id="fatal" class="cardSoft" style="display:none;"></div>
+        </div>
+
+        <aside class="pz-quizRight">
+          <div class="pz-sideCard2">
+            <div class="pz-sideHead">
+              <div>
+                <div class="pz-sideTitle2">Sem pressão</div>
+                <div class="pz-sideSub2">O objetivo não é “acertar”. É entender seu agora.</div>
+              </div>
+              <div class="pz-badge">apoio</div>
+            </div>
+
+            <div class="pz-miniAlerts">
+              <div class="pz-miniAlert">
+                <div class="pz-miniK">Dica</div>
+                <div class="pz-miniV">Se travar em uma pergunta, escolha a opção que “mais chega perto”.</div>
+              </div>
+              <div class="pz-miniAlert warn">
+                <div class="pz-miniK">Lembrete</div>
+                <div class="pz-miniV">Você pode refazer o quiz quando quiser.</div>
+              </div>
+            </div>
+
+            <div class="pz-sideLinks">
+              <a class="pz-textLink" href="emprego.html">ver emprego</a>
+              <a class="pz-textLink" href="cursos.html">ver cursos</a>
+              <a class="pz-textLink" href="concursos.html">ver concursos</a>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <!-- RESULTADO (escondido até o fim) -->
+      <section class="pz-result" id="result" hidden>
+        <div class="pz-resultCard">
+          <div class="pz-resultTop">
+            <div class="pz-resultK">Resultado</div>
+            <div class="pz-resultPill" id="resultPill">—</div>
+          </div>
+
+          <h2 class="pz-resultTitle" id="resultTitle">Seu começo</h2>
+          <p class="pz-resultText" id="resultText"></p>
+
+          <div class="pz-resultMap" aria-label="Mapa do resultado">
+            <div class="pz-miniMap">
+              <div class="pz-miniCore">PZ</div>
+              <div class="pz-miniNode" data-node="emprego">Emprego</div>
+              <div class="pz-miniNode" data-node="cursos">Cursos</div>
+              <div class="pz-miniNode" data-node="concursos">Concursos</div>
+            </div>
+          </div>
+
+          <div class="pz-resultSteps" id="resultSteps"></div>
+
+          <div class="pz-resultActions" id="resultActions"></div>
+        </div>
+      </section>
+
+      <footer>Ponto Zero • protótipo</footer>
+    </div>
+  </main>
+
+  <script type="module">
+    import { boot } from "./js/main.js";
+    import { QUIZ_QUESTIONS, scoreQuiz, saveQuizLocal } from "./js/quiz.js";
+    boot();
+
+    const chat = document.getElementById("chat");
+    const choices = document.getElementById("choices");
+    const bar = document.getElementById("bar");
+    const meta = document.getElementById("meta");
+    const fatal = document.getElementById("fatal");
+
+    const result = document.getElementById("result");
+    const pill = document.getElementById("resultPill");
+    const title = document.getElementById("resultTitle");
+    const text = document.getElementById("resultText");
+    const steps = document.getElementById("resultSteps");
+    const actions = document.getElementById("resultActions");
+
+    function showFatal(msg){
+      fatal.style.display = "block";
+      fatal.textContent = msg;
+    }
+
+    if (!Array.isArray(QUIZ_QUESTIONS) || QUIZ_QUESTIONS.length === 0) {
+      showFatal("Erro: perguntas do quiz não carregaram. Verifique /js/quiz.js.");
+      throw new Error("QUIZ_QUESTIONS vazio");
+    }
+
+    function bubble(text, who="bot") {
+      const d = document.createElement("div");
+      d.className = "bubble " + who;
+      d.textContent = text;
+      chat.appendChild(d);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    let i = 0;
+    const answers = [];
+
+    function setProgress() {
+      meta.textContent = `Pergunta ${i+1} de ${QUIZ_QUESTIONS.length}`;
+      const pct = Math.round((i / QUIZ_QUESTIONS.length) * 100);
+      bar.style.width = `${pct}%`;
+    }
+
+    function renderQuestion(){
+      setProgress();
+      const q = QUIZ_QUESTIONS[i];
+      bubble(q.text, "bot");
+
+      choices.innerHTML = "";
+      q.options.forEach(opt => {
+        const b = document.createElement("button");
+        b.className = "pz-choice";
+        b.type = "button";
+        b.innerHTML = `
+          <div class="pz-choiceDot" aria-hidden="true"></div>
+          <div class="pz-choiceText">
+            <strong>${opt.text}</strong>
+            ${opt.hint ? `<small>${opt.hint}</small>` : ``}
+          </div>
+        `;
+        b.addEventListener("click", () => {
+          bubble(opt.text, "user");
+          answers.push(opt.score);
+          i++;
+          if (i >= QUIZ_QUESTIONS.length) finish();
+          else renderQuestion();
+        });
+        choices.appendChild(b);
+      });
+    }
+
+    function finish(){
+      // salva + calcula
+      const res = scoreQuiz(answers);
+      saveQuizLocal(res);
+
+      // fecha chat/choices e abre card final
+      choices.innerHTML = "";
+      bar.style.width = "100%";
+      meta.textContent = "Finalizado";
+
+      // texto final
+      const map = {
+        emprego: {
+          pill: "EMP",
+          title: "Emprego",
+          text: "Pelo que você respondeu, seu melhor começo agora é emprego. Sem pressa: fontes confiáveis, perfil simples e ritmo.",
+          href: "emprego.html",
+          next: [
+            "Escolha 1 fonte confiável e crie seu perfil (sem textão).",
+            "Separe um currículo simples de 1 página (com prova: curso/projeto).",
+            "Faça 2 candidaturas simples nesta semana só pra ganhar ritmo."
+          ]
+        },
+        cursos: {
+          pill: "CUR",
+          title: "Cursos",
+          text: "Seu melhor começo agora é cursos. A meta é concluir algo rápido e virar isso em prova de capacidade.",
+          href: "cursos.html",
+          next: [
+            "Escolha 1 curso curto e comece hoje, nem que seja 20 minutos.",
+            "Finalize e gere prova: certificado e/ou um mini projeto.",
+            "Use essa prova no currículo/portfólio e avance pro próximo passo."
+          ]
+        },
+        concursos: {
+          pill: "CON",
+          title: "Concursos",
+          text: "Seu melhor começo agora é concursos. Clareza primeiro: nível, edital, e constância pequena.",
+          href: "concursos.html",
+          next: [
+            "Escolha 1 alvo e baixe o edital (só isso já organiza tudo).",
+            "Monte plano mínimo: português + matemática + informática (e o edital).",
+            "Estude pouco, mas todo dia. Constância ganha."
+          ]
+        }
+      };
+
+      const key = res.caminhoRecomendado;
+      const data = map[key];
+
+      result.hidden = false;
+      pill.textContent = data.pill;
+      title.textContent = data.title;
+      text.textContent = data.text;
+
+      // mini map highlight
+      document.querySelectorAll(".pz-miniNode").forEach(n => {
+        n.classList.toggle("active", n.dataset.node === key);
+      });
+
+      // steps
+      steps.innerHTML = `
+        <div class="pz-stepsGrid">
+          ${data.next.map((t, idx)=>`
+            <div class="pz-stepCard">
+              <div class="pz-stepNum">${idx+1}</div>
+              <div class="pz-stepTxt">${t}</div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+
+      // actions
+      actions.innerHTML = `
+        <a class="btn primary" href="${data.href}">Ir para ${data.title}</a>
+        <a class="btn" href="index.html">Voltar ao início</a>
+        <button class="btn ghost" type="button" id="redo">Refazer quiz</button>
+      `;
+
+      document.getElementById("redo").addEventListener("click", () => reset(true));
+
+      // leva o usuário pro resultado
+      result.scrollIntoView({ behavior:"smooth", block:"start" });
+    }
+
+    function reset(withGreeting=false){
+      i = 0;
+      answers.length = 0;
+      chat.innerHTML = "";
+      choices.innerHTML = "";
+      result.hidden = true;
+      bar.style.width = "0%";
+      meta.textContent = "Pergunta 1";
+
+      if (withGreeting){
+        bubble("Ok. Vamos de novo, sem pressa.", "bot");
+      } else {
+        bubble("Respira. Vamos achar um começo possível.", "bot");
+      }
+      renderQuestion();
+    }
+
+    document.getElementById("resetQuiz").addEventListener("click", (e) => {
+      e.preventDefault();
+      reset(true);
+    });
+
+    // start
+    reset(false);
+  </script>
+</body>
+</html>

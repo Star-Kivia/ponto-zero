@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ponto Zero</title>
+
+  <style>
+    :root{
+      /* base do fundo (você disse que amou) */
+      --bg: #fbf8ff;
+      --ink: #201828;
+      --muted: rgba(32,24,40,.70);
+
+      --lilac: #b9a0ff;
+      --lilac2:#8c62ff;
+
+      --shadow: 0 18px 60px rgba(33,14,72,.12);
+
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    }
+
+    *{ box-sizing:border-box }
+    html,body{ height:100% }
+    body{
+      margin:0;
+      font-family: var(--font);
+      color: var(--ink);
+      background:
+        radial-gradient(900px 520px at 20% 18%, rgba(185,160,255,.26), transparent 62%),
+        radial-gradient(900px 540px at 80% 26%, rgba(140,98,255,.14), transparent 62%),
+        var(--bg);
+      overflow:hidden;
+    }
+
+    /* grain MUITO sutil */
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+      opacity:.06;
+      mix-blend-mode:multiply;
+    }
+
+    /* Futurista sutil: grid + scan */
+    .futuristic{
+      position:fixed; inset:0;
+      pointer-events:none;
+      opacity:.55;
+      mix-blend-mode:multiply;
+    }
+    .futuristic::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        linear-gradient(transparent 0 0),
+        repeating-linear-gradient(
+          90deg,
+          rgba(140,98,255,.10) 0 1px,
+          transparent 1px 56px
+        ),
+        repeating-linear-gradient(
+          0deg,
+          rgba(185,160,255,.10) 0 1px,
+          transparent 1px 56px
+        );
+      mask-image: radial-gradient(70% 60% at 50% 40%, #000 0 55%, transparent 75%);
+      opacity:.65;
+    }
+    .futuristic::after{
+      content:"";
+      position:absolute; inset:-40% 0;
+      background: linear-gradient(
+        180deg,
+        transparent,
+        rgba(140,98,255,.18),
+        transparent
+      );
+      transform: translateY(-30%);
+      animation: scan 3.2s ease-in-out infinite;
+      opacity:.75;
+      filter: blur(0.2px);
+    }
+    @keyframes scan{
+      0%{ transform: translateY(-34%); opacity:.25 }
+      50%{ opacity:.8 }
+      100%{ transform: translateY(34%); opacity:.25 }
+    }
+
+    /* Partículas minimalistas conectando (não galáxia) */
+    canvas#net{
+      position:fixed; inset:0;
+      width:100%; height:100%;
+      pointer-events:none;
+      opacity:.55;
+    }
+
+    /* Curva lilás (gesto único) */
+    .curve{
+      position:fixed; inset:0;
+      pointer-events:none;
+      opacity:.9;
+    }
+    .curve svg{ width:100%; height:100% }
+    .curve path{
+      stroke: rgba(140,98,255,.22);
+      stroke-width: 2;
+      fill:none;
+      stroke-linecap: round;
+      stroke-dasharray: 1200;
+      stroke-dashoffset: 1200;
+      animation: draw 2.0s ease forwards;
+    }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+
+    /* Layout: nada de card. Tudo solto, editorial */
+    .wrap{
+      height:100%;
+      display:grid;
+      align-items:center;
+      padding: clamp(22px, 4vw, 40px);
+      position:relative;
+    }
+
+    .topbar{
+      position:absolute;
+      top: clamp(18px, 3vw, 28px);
+      left: clamp(22px, 4vw, 40px);
+      right: clamp(22px, 4vw, 40px);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      z-index:3;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      letter-spacing:-.2px;
+      font-weight: 950;
+      user-select:none;
+    }
+
+    /* Ícone estrela (minimal, com brilho leve) */
+    .star{
+      width:42px;
+      height:42px;
+      border-radius: 16px;
+      background: radial-gradient(circle at 30% 30%, rgba(185,160,255,1), rgba(140,98,255,.70));
+      display:grid;
+      place-items:center;
+      box-shadow: 0 14px 26px rgba(140,98,255,.14);
+      position:relative;
+      overflow:hidden;
+    }
+    .star::after{
+      content:"";
+      position:absolute; inset:-40%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+      transform: rotate(18deg);
+      animation: sheen 3.2s infinite;
+      opacity:.9;
+    }
+    @keyframes sheen{
+      0%{transform:translateX(-32%) rotate(18deg);opacity:0}
+      20%{opacity:1}
+      52%{transform:translateX(32%) rotate(18deg);opacity:0}
+      100%{opacity:0}
+    }
+    .star svg{ width:18px; height:18px; }
+    .brand small{
+      display:block;
+      margin-top:2px;
+      font-weight: 800;
+      color: var(--muted);
+      letter-spacing: 0;
+      font-size: 12px;
+    }
+
+    .skip{
+      border:1px solid rgba(32,24,40,.12);
+      background: rgba(255,255,255,.55);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-weight: 900;
+      cursor:pointer;
+      transition: transform .08s ease, background .2s ease;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 12px 30px rgba(33,14,72,.08);
+    }
+    .skip:hover{ background: rgba(255,255,255,.82); }
+    .skip:active{ transform: translateY(1px); }
+
+    /* Centro */
+    .center{
+      width: min(980px, 100%);
+      margin: 0 auto;
+      z-index:3;
+      position:relative;
+    }
+
+    .headline{
+      margin:0;
+      font-size: clamp(34px, 5vw, 64px);
+      line-height: 1.02;
+      letter-spacing: -1.2px;
+      font-weight: 990;
+      color: var(--ink);
+      opacity:0;
+      transform: translateY(12px);
+      animation: appear 0.8s ease forwards;
+      animation-delay: .15s;
+    }
+
+    .headline .accent{
+      background: linear-gradient(90deg, var(--ink), rgba(140,98,255,1), var(--ink));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+      background-size: 220% 100%;
+      animation: textSheen 5.2s ease-in-out infinite;
+    }
+    @keyframes textSheen{
+      0%,100%{ background-position: 0% 50% }
+      50%{ background-position: 100% 50% }
+    }
+
+    @keyframes appear{
+      to{ opacity:1; transform: translateY(0); }
+    }
+
+    .lines{
+      margin-top: 14px;
+      display:grid;
+      gap: 10px;
+    }
+    .line{
+      margin:0;
+      font-size: clamp(15px, 2vw, 20px);
+      color: var(--muted);
+      font-weight: 800;
+      opacity:0;
+      transform: translateY(12px);
+      transition: opacity .55s ease, transform .55s cubic-bezier(.2,1,.2,1);
+    }
+    .line strong{ color: var(--ink); font-weight: 950; }
+    .line.show{ opacity:1; transform: translateY(0); }
+
+    /* “assinatura” desenhando embaixo (sem card) */
+    .signature{
+      margin-top: 18px;
+      width: min(520px, 92%);
+      opacity:0;
+      transform: translateY(10px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .signature.show{ opacity:1; transform: translateY(0); }
+    .signature svg{ width:100%; height: 28px; display:block; }
+    .signature path{
+      stroke: rgba(140,98,255,.78);
+      stroke-width: 6;
+      fill:none;
+      stroke-linecap: round;
+      stroke-dasharray: 520;
+      stroke-dashoffset: 520;
+    }
+    .signature path.draw{
+      animation: sig 1.25s ease forwards;
+    }
+    @keyframes sig{ to{ stroke-dashoffset: 0; } }
+
+    /* Launch out: tudo sai como “abertura indo embora” */
+    .launch{
+      animation: launchOut .75s cubic-bezier(.2,1,.2,1) forwards;
+    }
+    @keyframes launchOut{
+      to{
+        opacity:0;
+        transform: translateY(-18px) scale(1.01);
+        filter: blur(6px);
+      }
+    }
+
+    /* Hint mínimo no rodapé (nada explicativo demais) */
+    .hint{
+      position:absolute;
+      bottom: clamp(18px, 3vw, 28px);
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(32,24,40,.55);
+      font-weight: 800;
+      font-size: 12px;
+      z-index:3;
+      opacity:0;
+      transition: opacity .55s ease;
+      user-select:none;
+    }
+    .hint.show{ opacity:1; }
+
+    /* Responsivo */
+    @media (max-width: 680px){
+      .brand small{ display:none; }
+      .skip{ padding: 10px 12px; }
+      .lines{ gap: 8px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="futuristic" aria-hidden="true"></div>
+  <canvas id="net" aria-hidden="true"></canvas>
+
+  <div class="curve" aria-hidden="true">
+    <svg viewBox="0 0 1000 600" preserveAspectRatio="none">
+      <path d="M-40,420 C160,260 260,520 460,360 C640,220 760,360 1040,220"/>
+    </svg>
+  </div>
+
+  <div class="wrap" id="wrap">
+    <div class="topbar">
+      <div class="brand" aria-label="Ponto Zero">
+        <div class="star" aria-hidden="true">
+          <!-- estrela simples, elegante -->
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2.6l2.2 6.2 6.6.1-5.3 3.9 2 6.3-5.5-3.6-5.5 3.6 2-6.3-5.3-3.9 6.6-.1L12 2.6z"
+                  fill="rgba(255,255,255,.92)"/>
+          </svg>
+        </div>
+       
+      </div>
+
+      <button class="skip" id="skip" type="button">Pular</button>
+    </div>
+
+    <div class="center" id="center">
+      <h1 class="headline">
+        Tá tudo bem estar no <span class="accent">ponto zero</span>.
+      </h1>
+
+      <div class="lines" aria-live="polite">
+        <p class="line" id="l1">Você não precisa resolver tudo agora.</p>
+        <p class="line" id="l2">Você só precisa de um <strong>próximo passo</strong>.</p>
+        <p class="line" id="l3">E ele começa aqui.</p>
+      </div>
+
+      <div class="signature" id="sig" aria-hidden="true">
+        <svg viewBox="0 0 520 28" preserveAspectRatio="none">
+          <path id="sigPath" d="M8,18 C68,6 140,26 206,14 C274,2 350,24 512,10"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="hint" id="hint">clique em qualquer lugar para pular</div>
+  </div>
+
+  <script>
+    // ========== Futurista sutil: rede de pontos ==========
+    const canvas = document.getElementById("net");
+    const ctx = canvas.getContext("2d");
+    let w = 0, h = 0, dpr = 1;
+
+    function resize(){
+      dpr = Math.min(2, window.devicePixelRatio || 1);
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      canvas.style.width = w + "px";
+      canvas.style.height = h + "px";
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    const points = [];
+    const N = Math.min(110, Math.floor(w * 0.08) + 60);
+    for(let i=0;i<N;i++){
+      points.push({
+        x: Math.random()*w,
+        y: Math.random()*h,
+        vx:(Math.random()-.5)*0.25,
+        vy:(Math.random()-.5)*0.25,
+        r: Math.random()*1.5 + 0.6
+      });
+    }
+
+    let mx = w/2, my = h/2;
+    window.addEventListener("mousemove", (e)=>{ mx = e.clientX; my = e.clientY; }, {passive:true});
+
+    function drawNet(){
+      ctx.clearRect(0,0,w,h);
+
+      // glow suave seguindo o mouse (bem sutil)
+      const g = ctx.createRadialGradient(mx, my, 0, mx, my, 260);
+      g.addColorStop(0, "rgba(140,98,255,0.10)");
+      g.addColorStop(1, "rgba(140,98,255,0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0,0,w,h);
+
+      for(const p of points){
+        p.x += p.vx; p.y += p.vy;
+        if(p.x < -40) p.x = w+40;
+        if(p.x > w+40) p.x = -40;
+        if(p.y < -40) p.y = h+40;
+        if(p.y > h+40) p.y = -40;
+      }
+
+      // linhas
+      for(let i=0;i<points.length;i++){
+        for(let j=i+1;j<points.length;j++){
+          const a = points[i], b = points[j];
+          const dx = a.x-b.x, dy = a.y-b.y;
+          const d = Math.hypot(dx,dy);
+          if(d < 120){
+            const alpha = (1 - d/120) * 0.10;
+            ctx.strokeStyle = `rgba(140,98,255,${alpha})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(a.x,a.y);
+            ctx.lineTo(b.x,b.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // pontos
+      for(const p of points){
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle = "rgba(32,24,40,0.10)";
+        ctx.fill();
+      }
+
+      requestAnimationFrame(drawNet);
+    }
+    drawNet();
+
+    // ========== Sequência da abertura ==========
+    const l1 = document.getElementById("l1");
+    const l2 = document.getElementById("l2");
+    const l3 = document.getElementById("l3");
+    const sig = document.getElementById("sig");
+    const sigPath = document.getElementById("sigPath");
+    const wrap = document.getElementById("wrap");
+    const center = document.getElementById("center");
+    const skip = document.getElementById("skip");
+    const hint = document.getElementById("hint");
+
+    let finished = false;
+
+    function show(el){ el.classList.add("show"); }
+
+    setTimeout(()=>show(l1), 850);
+    setTimeout(()=>show(l2), 1650);
+    setTimeout(()=>{
+      show(l3);
+      sig.classList.add("show");
+      sigPath.classList.add("draw");
+    }, 2550);
+    setTimeout(()=>hint.classList.add("show"), 2950);
+
+    // Auto-launch para login (sem botão)
+    const AUTO_GO_MS = 4200;
+
+    function go(){
+      if (finished) return;
+      finished = true;
+      // anima saída
+      center.classList.add("launch");
+      hint.classList.remove("show");
+      setTimeout(()=>{ window.location.href = "home.html"; }, 520);
+    }
+
+    // auto
+    setTimeout(go, AUTO_GO_MS);
+
+    // pular: botão + clique em qualquer lugar + Enter
+    skip.addEventListener("click", go);
+    wrap.addEventListener("click", go);
+    document.addEventListener("keydown", (e)=>{
+      if(e.key === "Enter" || e.key === "Escape" || e.key === " ") go();
+    });
+  </script>
+</body>
+</html>

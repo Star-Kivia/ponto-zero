@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ponto Zero | Cursos</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <header class="nav">
+    <div class="container navbar">
+      <a class="brand" href="home.html"><span class="name">Ponto Zero</span><span class="tag">orientação</span></a>
+
+      <nav class="navlinks">
+        <a href="emprego.html">Emprego</a>
+        <a href="cursos.html">Cursos</a>
+        <a href="concursos.html">Concursos</a>
+      </nav>
+
+      <div class="navright">
+        <div class="searchwrap" role="search">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M10.8 18.2a7.4 7.4 0 1 1 0-14.8 7.4 0 0 1 0 14.8Z" stroke="rgba(26,19,36,.70)" stroke-width="2"/>
+            <path d="M16.9 16.9 21 21" stroke="rgba(26,19,36,.70)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input id="pzSearch" class="search" type="search" placeholder="Pesquisar…" aria-label="Pesquisar" />
+          <div id="pzSearchResults" aria-label="Resultados"></div>
+        </div>
+        <a class="btn" href="index.html">Início</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <section class="pz-heroSimple">
+        <div class="pz-kicker">
+          <span class="pz-kdot"></span>
+          cursos e formação
+        </div>
+
+        <h1 class="pz-heroTitle2">Cursos que viram passo real</h1>
+
+        <p class="pz-heroSub2">
+          Aqui você escolhe curso sem cair em “qualquer coisa”. A ideia é: começar simples,
+          concluir rápido e usar o certificado/portfólio como prova de capacidade.
+        </p>
+
+        <div class="pz-heroLinks">
+          <a class="pz-textLink" href="#lista">ver cursos</a>
+          <a class="pz-textLink" href="#essencial">essencial</a>
+        </div>
+      </section>
+
+      <section class="pz-layout">
+        <!-- ESQUERDA -->
+        <div>
+          <section class="section" id="lista">
+            <div class="sectionTop">
+              <h2>catálogo</h2>
+              <p>Filtre e abra detalhes só quando precisar.</p>
+            </div>
+
+            <div class="pz-chipRow" aria-label="Filtros">
+              <button class="pz-chip" type="button" aria-pressed="true" data-area="all">Todas as áreas</button>
+              <button class="pz-chip" type="button" aria-pressed="false" data-area="tecnologia">Tecnologia</button>
+              <button class="pz-chip" type="button" aria-pressed="false" data-area="administração">Administração</button>
+              <button class="pz-chip" type="button" aria-pressed="false" data-area="idiomas">Idiomas</button>
+              <button class="pz-chip" type="button" aria-pressed="false" data-area="design">Design</button>
+              <button class="pz-chip" type="button" aria-pressed="false" data-area="carreira">Carreira</button>
+            </div>
+
+            <div class="pz-chipRow" aria-label="Filtros tipo">
+              <button class="pz-chip" type="button" aria-pressed="true" data-tipo="all">Qualquer tipo</button>
+              <button class="pz-chip" type="button" aria-pressed="false" data-tipo="gratuito">Gratuito</button>
+              <button class="pz-chip" type="button" aria-pressed="false" data-tipo="pago">Pago</button>
+              <button class="pz-chip" type="button" aria-pressed="false" data-cert="true">Com certificado</button>
+            </div>
+
+            <div id="list" class="pz-platformGrid"></div>
+            <div id="empty" class="cardSoft" style="display:none;">Nenhum curso encontrado.</div>
+          </section>
+        </div>
+
+        <!-- DIREITA -->
+        <aside class="pz-side2" id="essencial">
+          <div class="pz-sideCard2">
+            <div class="pz-sideHead">
+              <div>
+                <div class="pz-sideTitle2">Essencial</div>
+                <div class="pz-sideSub2">Como escolher sem se perder.</div>
+              </div>
+              <div class="pz-badge">guia</div>
+            </div>
+
+            <div class="pz-miniAlerts">
+              <div class="pz-miniAlert">
+                <div class="pz-miniK">Escolha esperta</div>
+                <div class="pz-miniV">Priorize cursos que você consegue concluir rápido e mostrar resultado.</div>
+              </div>
+              <div class="pz-miniAlert warn">
+                <div class="pz-miniK">Não caia</div>
+                <div class="pz-miniV">Evite curso sem conteúdo claro, sem ementa e sem prova de conclusão.</div>
+              </div>
+            </div>
+
+            <div class="pz-cvCard">
+              <div class="pz-cvRow">
+                <div class="pz-cvK">Certificado: quando importa</div>
+                <div class="pz-cvV">Importa mais quando o curso é reconhecido e você consegue provar o que fez.</div>
+              </div>
+              <div class="pz-cvRow">
+                <div class="pz-cvK">Prova prática</div>
+                <div class="pz-cvV">Projeto simples (site, planilha, texto, apresentação) vale muito.</div>
+              </div>
+              <div class="pz-cvRow">
+                <div class="pz-cvK">Trilha rápida</div>
+                <div class="pz-cvV">1) Básico  2) Exercício  3) Certificado/Projeto  4) Próximo passo</div>
+              </div>
+            </div>
+
+            <div class="pz-sideLinks">
+              <a class="pz-textLink" href="quiz.html">refazer quiz</a>
+              <a class="pz-textLink" href="#" id="openSupportHint">falar no suporte</a>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <footer>Ponto Zero • protótipo</footer>
+    </div>
+  </main>
+
+  <script type="module">
+    import { boot } from "./js/main.js";
+    import { listCursos } from "./js/db.js";
+
+    boot();
+
+    const list = document.getElementById("list");
+    const empty = document.getElementById("empty");
+
+    const areaBtns = Array.from(document.querySelectorAll("[data-area]"));
+    const tipoBtns = Array.from(document.querySelectorAll("[data-tipo]"));
+    const certBtn = document.querySelector("[data-cert]");
+
+    let allItems = [];
+    let fArea = "all";
+    let fTipo = "all";
+    let fCert = false;
+
+    const norm = s => (s||"").toLowerCase().trim();
+    const pill = label => `<span class="pz-pill">${label}</span>`;
+
+    function renderCourse(it){
+      const tags = [
+        it.area || "Área",
+        it.tipo || "tipo",
+        it.certificado ? "Certificado" : "Sem certificado"
+      ].slice(0,3).map(pill).join("");
+
+      return `
+        <article class="pz-courseCard" data-area="${norm(it.area)}" data-tipo="${norm(it.tipo)}" data-cert="${it.certificado ? "true":"false"}">
+          <div class="pz-courseTop">
+            <div class="pz-courseTitle">${it.nome}</div>
+            <div class="pz-platformMeta">${tags}</div>
+          </div>
+
+          <p class="pz-courseDesc">${it.descricao || "Curso com foco em começo prático e conclusão rápida."}</p>
+
+          <div class="pz-courseActions">
+            <a class="pz-textLink" href="${it.link}" target="_blank" rel="noopener">abrir curso</a>
+            <button class="pz-textLink ghost" type="button" data-more>ver detalhes</button>
+          </div>
+
+          <div class="pz-courseMore">
+            <div class="pz-metaGrid">
+              <div class="pz-metaBox">
+                <div class="pz-metaK">Área</div>
+                <div class="pz-metaV">${it.area || "—"}</div>
+              </div>
+              <div class="pz-metaBox">
+                <div class="pz-metaK">Tipo</div>
+                <div class="pz-metaV">${it.tipo || "—"}</div>
+              </div>
+              <div class="pz-metaBox">
+                <div class="pz-metaK">Certificado</div>
+                <div class="pz-metaV">${it.certificado ? "Sim" : "Não"}</div>
+              </div>
+              <div class="pz-metaBox">
+                <div class="pz-metaK">Dica</div>
+                <div class="pz-metaV">Finalize e produza algo pra mostrar (mesmo simples).</div>
+              </div>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function applyFilters(){
+      const filtered = allItems.filter(it => {
+        const a = norm(it.area);
+        const t = norm(it.tipo);
+        const c = !!it.certificado;
+
+        if (fArea !== "all" && !a.includes(fArea)) return false;
+        if (fTipo !== "all" && !t.includes(fTipo)) return false;
+        if (fCert && !c) return false;
+        return true;
+      });
+
+      const html = filtered.map(renderCourse).join("");
+      list.innerHTML = html || "";
+      empty.style.display = html ? "none" : "block";
+    }
+
+    areaBtns.forEach(b => b.addEventListener("click", () => {
+      areaBtns.forEach(x => x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true");
+      fArea = b.getAttribute("data-area");
+      applyFilters();
+    }));
+
+    tipoBtns.forEach(b => b.addEventListener("click", () => {
+      tipoBtns.forEach(x => x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true");
+      fTipo = b.getAttribute("data-tipo");
+      applyFilters();
+    }));
+
+    certBtn?.addEventListener("click", () => {
+      const on = certBtn.getAttribute("aria-pressed") === "true";
+      certBtn.setAttribute("aria-pressed", String(!on));
+      fCert = !on;
+      applyFilters();
+    });
+
+    list.addEventListener("click", (e) => {
+      const more = e.target.closest("button[data-more]");
+      if (!more) return;
+      const card = e.target.closest(".pz-courseCard");
+      const details = card.querySelector(".pz-courseMore");
+      details.classList.toggle("show");
+      more.textContent = details.classList.contains("show") ? "fechar detalhes" : "ver detalhes";
+    });
+
+    try{
+      allItems = await listCursos();
+      applyFilters();
+    }catch(e){
+      empty.style.display = "block";
+      empty.textContent = "Erro ao carregar: " + (e.message || e);
+    }
+
+    document.getElementById("openSupportHint")?.addEventListener("click", (ev) => {
+      ev.preventDefault();
+      const fab = document.querySelector(".chatFab");
+      if (fab) fab.click();
+    });
+  </script>
+</body>
+</html>

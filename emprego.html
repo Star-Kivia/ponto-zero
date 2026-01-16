@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ponto Zero | Emprego</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <header class="nav">
+    <div class="container navbar">
+      <a class="brand" href="home.html"><span class="name">Ponto Zero</span><span class="tag">orientação</span></a>
+
+      <nav class="navlinks">
+        <a href="emprego.html">Emprego</a>
+        <a href="cursos.html">Cursos</a>
+        <a href="concursos.html">Concursos</a>
+      </nav>
+
+      <div class="navright">
+        <div class="searchwrap" role="search">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M10.8 18.2a7.4 7.4 0 1 1 0-14.8 7.4 7.4 0 0 1 0 14.8Z" stroke="rgba(26,19,36,.70)" stroke-width="2"/>
+            <path d="M16.9 16.9 21 21" stroke="rgba(26,19,36,.70)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input id="pzSearch" class="search" type="search" placeholder="Pesquisar…" aria-label="Pesquisar" />
+          <div id="pzSearchResults" aria-label="Resultados"></div>
+        </div>
+        <a class="btn" href="index.html">Início</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <!-- HERO SIMPLES (sem cards quadrados) -->
+      <section class="pz-heroSimple">
+        <div class="pz-kicker">
+          <span class="pz-kdot"></span>
+          primeiro emprego
+        </div>
+
+        <h1 class="pz-heroTitle2">Onde procurar sem cair em ciladas</h1>
+
+        <p class="pz-heroSub2">
+          Aqui é curadoria de <strong>sites e programas confiáveis</strong>. Você escolhe uma fonte boa,
+          completa seu perfil e aplica com consistência.
+        </p>
+
+        <div class="pz-heroLinks">
+          <a class="pz-textLink" href="#fontes">ver fontes confiáveis</a>
+          <a class="pz-textLink" href="#kit">kit de entrada</a>
+        </div>
+      </section>
+
+      <section class="pz-layout">
+        <!-- ESQUERDA -->
+        <div>
+          <section class="section" id="fontes">
+            <div class="sectionTop">
+              <h2>fontes confiáveis</h2>
+            </div>
+
+       
+
+            <div class="pz-platformGrid" id="list"></div>
+            <div id="empty" class="cardSoft" style="display:none;">Nenhuma plataforma encontrada.</div>
+          </section>
+        </div>
+
+        <!-- DIREITA -->
+        <aside class="pz-side2">
+          <div class="pz-sideCard2" id="kit">
+            <div class="pz-sideHead">
+              <div>
+                <div class="pz-sideTitle2">Kit de entrada</div>
+                <div class="pz-sideSub2">Pra você não travar no começo.</div>
+              </div>
+              <div class="pz-badge">essencial</div>
+            </div>
+
+            <div class="pz-miniAlerts">
+              <div class="pz-miniAlert">
+                <div class="pz-miniK">Dica prática</div>
+                <div class="pz-miniV">Escolha 1 plataforma e complete o perfil antes de abrir 10 abas.</div>
+              </div>
+              <div class="pz-miniAlert warn">
+                <div class="pz-miniK">Alerta</div>
+                <div class="pz-miniV">Se pedirem taxa, PIX ou “equipamento”, fecha. Isso não é padrão.</div>
+              </div>
+            </div>
+
+            <div class="pz-steps">
+              <div class="pz-step">
+                <div class="pz-stepN">1</div>
+                <div class="pz-stepT">
+                  <strong>Escolha um alvo simples</strong>
+                  <small>Atendimento, administrativo, jovem aprendiz ou estágio.</small>
+                </div>
+              </div>
+              <div class="pz-step">
+                <div class="pz-stepN">2</div>
+                <div class="pz-stepT">
+                  <strong>Perfil completo</strong>
+                  <small>Objetivo curto + contato + escolaridade. Sem textão.</small>
+                </div>
+              </div>
+              <div class="pz-step">
+                <div class="pz-stepN">3</div>
+                <div class="pz-stepT">
+                  <strong>2 candidaturas simples</strong>
+                  <small>Ritmo primeiro, refinamento depois.</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="pz-sideLinks">
+              <a class="pz-textLink" href="quiz.html">refazer quiz</a>
+              <a class="pz-textLink" href="#fontes">ver fontes</a>
+              <a class="pz-textLink" href="#" id="openSupportHint">falar no suporte</a>
+            </div>
+          </div>
+
+          <div class="pz-sideCard2" id="curriculo">
+            <div class="pz-sideHead">
+              <div>
+                <div class="pz-sideTitle2">Currículo</div>
+                <div class="pz-sideSub2">Curto, limpo, com prova de capacidade.</div>
+              </div>
+              <div class="pz-badge ghost">modelo</div>
+            </div>
+
+            <div class="pz-cvCard">
+              <div class="pz-cvRow">
+                <div class="pz-cvK">Formato</div>
+                <div class="pz-cvV">1 página. Sem enfeite. Título claro.</div>
+              </div>
+              <div class="pz-cvRow">
+                <div class="pz-cvK">Objetivo</div>
+                <div class="pz-cvV">Uma frase: “Primeiro emprego em ____”.</div>
+              </div>
+              <div class="pz-cvRow">
+                <div class="pz-cvK">Prova</div>
+                <div class="pz-cvV">Curso/projeto/voluntariado vira experiência.</div>
+              </div>
+            </div>
+
+            <div class="pz-sideLinks">
+              <a class="pz-textLink" href="https://www.canva.com/" target="_blank" rel="noopener">modelos de currículo</a>
+              <a class="pz-textLink" href="https://www.linkedin.com/" target="_blank" rel="noopener">criar linkedin</a>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <footer>Ponto Zero • protótipo</footer>
+    </div>
+  </main>
+
+  <script type="module">
+    import { boot } from "./js/main.js";
+    import { listEmpregos } from "./js/db.js";
+
+    boot();
+
+    const list = document.getElementById("list");
+    const empty = document.getElementById("empty");
+
+    function pill(label){ return `<span class="pz-pill">${label}</span>`; }
+
+    function tagsFor(it){
+      const n = (it.nome || "").toLowerCase();
+      const tags = [];
+
+      if (n.includes("ciee") || n.includes("estágio") || n.includes("estagio")) tags.push("Estágio");
+      if (n.includes("aprendiz") || (it.publicoAlvo || "").toLowerCase().includes("jov")) tags.push("Jovem");
+      if ((it.regiao || "").toLowerCase().includes("sergipe") || n.includes("sergipe")) tags.push("Regional");
+      if (n.includes("linkedin")) tags.push("Rede");
+      if (n.includes("gupy")) tags.push("Processo seletivo");
+      if (!tags.length) tags.push("Portal");
+
+      return tags.slice(0,3).map(pill).join("");
+    }
+
+    function renderPlatform(it){
+      return `
+        <article class="pz-platform">
+          <div class="pz-platformHead">
+            <div class="pz-platformTitle">${it.nome}</div>
+            <div class="pz-platformMeta">${tagsFor(it)}</div>
+          </div>
+
+          <p class="pz-platformDesc">${it.descricao || ""}</p>
+
+          <div class="pz-platformActions">
+            <a class="pz-textLink" href="${it.link}" target="_blank" rel="noopener">abrir site</a>
+            <button class="pz-textLink ghost" type="button" data-copy="${it.link}">copiar link</button>
+          </div>
+        </article>
+      `;
+    }
+
+    try {
+      const items = await listEmpregos({ regiao: "Sergipe" });
+      if (!items.length) {
+        empty.style.display = "block";
+      } else {
+        list.innerHTML = items.map(renderPlatform).join("");
+        list.addEventListener("click", async (e) => {
+          const copy = e.target.closest("button[data-copy]");
+          if (!copy) return;
+          try {
+            await navigator.clipboard.writeText(copy.getAttribute("data-copy"));
+            copy.textContent = "copiado";
+          } catch {
+            copy.textContent = "não copiou";
+          }
+        });
+      }
+    } catch (e) {
+      empty.style.display = "block";
+      empty.textContent = "Erro ao carregar: " + (e.message || e);
+    }
+
+    document.getElementById("openSupportHint")?.addEventListener("click", (ev) => {
+      ev.preventDefault();
+      const fab = document.querySelector(".chatFab");
+      if (fab) fab.click();
+    });
+  </script>
+</body>
+</html>
