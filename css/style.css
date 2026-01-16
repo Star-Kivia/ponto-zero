@@ -2795,3 +2795,64 @@ img, svg { max-width: 100%; height: auto; }
 
   .pz-node.bottom:hover{ transform: none !important; }
 }
+
+/* ===== NAV MOBILE (barra inferior estilo app) ===== */
+.pz-mobileNav{ display:none; }
+
+@media (max-width: 820px){
+  /* dá espaço no final da página pra barra não cobrir conteúdo */
+  body{ padding-bottom: 76px; }
+
+  .pz-mobileNav{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    z-index: 200;
+
+    border-radius: 22px;
+    border: 1px solid color-mix(in srgb, var(--line) 82%, transparent);
+    background: color-mix(in srgb, var(--glass2) 92%, transparent);
+    backdrop-filter: blur(14px);
+    box-shadow: var(--shadow);
+    padding: 10px;
+  }
+
+  .pz-mobileNav a{
+    border-radius: 18px;
+    padding: 10px 8px;
+    display: grid;
+    place-items: center;
+    gap: 6px;
+    color: var(--muted);
+    font-weight: 950;
+  }
+
+  .pz-mNavDot{
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: rgba(111,77,255,.28);
+    box-shadow: 0 0 0 7px rgba(111,77,255,.08);
+  }
+
+  .pz-mNavText{
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.1px;
+  }
+
+  .pz-mobileNav a.active{
+    color: var(--ink);
+    background: rgba(111,77,255,.08);
+    border: 1px solid rgba(111,77,255,.18);
+  }
+  .pz-mobileNav a.active .pz-mNavDot{
+    background: rgba(111,77,255,.70);
+    box-shadow: 0 0 0 7px rgba(111,77,255,.12);
+  }
+}
