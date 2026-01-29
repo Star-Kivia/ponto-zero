@@ -2856,3 +2856,29 @@ img, svg { max-width: 100%; height: auto; }
     box-shadow: 0 0 0 7px rgba(111,77,255,.12);
   }
 }
+.pz-supportFab,
+.pz-supportDock{
+  z-index: 260 !important; /* maior que .pz-mobileNav (200) */
+}
+
+@media (max-width: 820px){
+  body:has(.pz-mobileNav) .pz-supportFab{
+    bottom: 92px !important; /* acima da barra */
+  }
+  body:has(.pz-mobileNav) .pz-supportDock{
+    bottom: 154px !important; /* dock acima da barra + botão */
+  }
+}
+
+@media (max-width: 820px){
+  .pz-supportFab{ bottom: 92px; }
+  .pz-supportDock{ bottom: 154px; }
+}
+
+@media (max-width: 520px){
+  .pz-supportFab{ right: 10px !important; }
+  .pz-supportDock{
+    right: 10px !important;
+    width: calc(100% - 20px) !important;
+  }
+}
